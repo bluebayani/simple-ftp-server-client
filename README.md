@@ -3,11 +3,10 @@ Blue Bayani</br>
 
 ## Usage:</br>
 Invoke the server using: ```python3 server.py <PORT>``` </br>
-
 Invoke the client using: ```python3 client.py <SERVER MACHINE> <PORT>```</br>
-EXAMPLE:</br>
-```python3 client.py <your ip address> 12000``` </br> 
-```python3 server.py 12000```</br> 
+_**EXAMPLE:**_</br>
+> ```python3 client.py <your ip address> 12000``` </br> 
+> ```python3 server.py 12000```</br> 
 **NOTE: The client and server port numbers should match.**</br>
 
 #### Client Commands:</br>
