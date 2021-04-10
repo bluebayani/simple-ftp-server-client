@@ -1,6 +1,7 @@
 # Simple FTP Server and Client
 Blue Bayani</br>
 Brian Edwards (brian_edwards@csu.fullerton.edu)</br>
+Vincent Lee</br>
 
 ## Usage:</br>
 Invoke the server using: ```python3 server.py <PORT>``` </br>
