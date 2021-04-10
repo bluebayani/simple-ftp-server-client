@@ -1,5 +1,5 @@
 # Simple FTP Server and Client
-Blue Bayani</br>
+Blue Bayani (kbayani@csu.fullerton.edu)</br>
 Brian Edwards (brian_edwards@csu.fullerton.edu)</br>
 Vincent Lee</br>
 
