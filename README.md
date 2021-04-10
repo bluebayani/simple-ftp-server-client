@@ -9,8 +9,9 @@ Invoke the client using: ```python3 client.py <SERVER MACHINE> <PORT>```</br>
 
 **NOTE: The client and server port numbers should match.**</br>
 _**EXAMPLE:**_</br>
-> ```python3 client.py <your ip address> 12000``` </br> 
 > ```python3 server.py 12000```</br> 
+> ```python3 client.py <your ip address> 12000``` </br> 
+
 </br>
 
 #### Client Commands:</br>
