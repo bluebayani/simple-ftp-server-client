@@ -1,8 +1,8 @@
 import os
 import sys
 import socket
-
-COMMANDS = ["get", "put", "ls", "quit"]
+from constants import *
+from functions import *
 
 if __name__ == '__main__':
     # EXAMPLE: python3 client.py <your ip address> 12000
@@ -18,6 +18,7 @@ if __name__ == '__main__':
     # connect to server
     cliSocket.connect((server, int(port)))
     print("Connected to " + server + " on port " + str(port))
+    print_commands()
 
     # cannot connect
     if not cliSocket:
@@ -30,9 +31,31 @@ if __name__ == '__main__':
         buffer = (input("ftp> ")).lower().split()
         # EXAMPLE: ftp> ls text.txt
         # buffer = ['ls', 'text.txt']
+        # buffer[0] -> command
+        # buffer[1] -> file name
 
-        # perform the appropriate client side action
-        # TO DO: check if buffer[0] == COMMANDS[0] "get"
-        # TO DO: check if buffer[0] == COMMANDS[1] "put"
-        # TO DO: check if buffer[0] == COMMANDS[2] "ls"
-        # TO DO: check if buffer[0] == COMMANDS[3] "quit"
+        # download the specified <FILE NAME> from the server
+        if buffer[0] == COMMANDS[0]:
+            send_data(buffer[0], cliSocket)
+            print("SUCCESSFULLY CALLED GET COMMAND.")
+
+        # upload the specified <FILE NAME> to the server
+        elif buffer[0] == COMMANDS[1]:
+            send_data(buffer[0], cliSocket)
+            print("SUCCESSFULLY CALLED PUT COMMAND.")
+
+        # print list of files on the server
+        elif buffer[0] == COMMANDS[2]:
+            send_data(buffer[0], cliSocket)
+            print("SUCCESSFULLY CALLED LS COMMAND.")
+
+        # quit command
+        elif buffer[0] == COMMANDS[3]:
+            send_data(buffer[0], cliSocket)
+            # close the socket
+            cliSocket.close()
+            print("SUCCESSFULLY CALLED QUIT COMMAND. Connection closed...")
+            break
+        else:
+            print(buffer[0] + " is an invalid command.")
+            print_commands()

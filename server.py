@@ -1,8 +1,9 @@
 import os
 import sys
 import socket
+from constants import *
+from functions import *
 
-COMMANDS = ["get", "put", "ls", "quit"]
 
 if __name__ == '__main__':
     # EXAMPLE: python3 server.py 12000
@@ -26,12 +27,28 @@ if __name__ == '__main__':
 
     while True:
         # keep listening for connections until user ends process
-        print("Listening on port... " + port)
+        print("Listening on port " + port)
         cliSocket, addr = servSocket.accept()
-        print("Connected to... " + addr[0])
+        print("Connected to " + addr[0])
 
-        # need to get the buffer from the client and perform the appropriate serverside action
-        # TO DO: check if buffer[0] == COMMANDS[0] "get"
-        # TO DO: check if buffer[0] == COMMANDS[1] "put"
-        # TO DO: check if buffer[0] == COMMANDS[2] "ls"
-        # TO DO: check if buffer[0] == COMMANDS[3] "quit"
+        while True:
+            # get command from client socket
+            fromClient = cliSocket.recv(40).decode("utf-8")
+
+            # TO DO: send the specified <FILE NAME> to the client
+            if fromClient == COMMANDS[0]:
+                print("SUCCESSFULLY CALLED GET COMMAND.")
+
+            # TO DO: download the specified <FILE NAME> from the client
+            elif fromClient == COMMANDS[1]:
+                print("SUCCESSFULLY CALLED PUT COMMAND.")
+
+            # TO DO: lists files on server
+            elif fromClient == COMMANDS[2]:
+                print("SUCCESSFULLY CALLED LS COMMAND.")
+
+            # quit command
+            elif fromClient == COMMANDS[3]:
+                cliSocket.close()
+                print("SUCCESSFULLY CALLED QUIT COMMAND. Connection closed...")
+                break
