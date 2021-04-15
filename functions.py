@@ -2,6 +2,7 @@
 import os
 import sys
 import time
+from constants import *
 
 
 def print_commands():
@@ -15,9 +16,9 @@ def print_commands():
     print("=======================================")
 
 
-def receive_data(sock, size):
+def receive_data(socket, size):
     # receive data until all bytes are received
-    return sock.recv(size).decode("utf-8")
+    return socket.recv(size).decode("utf-8")
 
 
 def send_data(data, socket):
@@ -26,6 +27,24 @@ def send_data(data, socket):
     # keep sending data from socket until all bytes are recieved
     while len(data) > sentBytes:
         sentBytes += socket.send(data[sentBytes:])
+
+def prepend_zeros(data):
+    # Get the size of the data read and convert it to string
+    data = str(data)
+    # Prepend 0's to the size string until the size is 10 bytes
+    while len(data) < 10:
+        data = "0" + data
+    return data
+
+
+def get_files():
+    # return a variable with the names of the files from ./server_files/
+    files = os.listdir(SERVER_FILES)
+    server_files = ""
+    for file in files:
+        server_files += file + "  "
+    server_files = server_files[:-2]
+    return server_files
 
  def get_funcCli(data, cliSocket):
 
@@ -111,3 +130,4 @@ def get_funcServ(fileName, cliSocket):
         
     if fileExist == True:
         fileObj.close()    
+

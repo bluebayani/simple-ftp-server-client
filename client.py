@@ -49,14 +49,22 @@ if __name__ == '__main__':
         # print list of files on the server
         elif buffer[0] == COMMANDS[2]:
             send_data(buffer[0], cliSocket)
-            print("SUCCESSFULLY CALLED LS COMMAND.")
+            # get size of response
+            servResponseSize = receive_data(cliSocket, 10)
+
+            if servResponseSize == "":
+                print("FAILURE")
+            else:
+                print("SUCCESS: ls command invoked...")
+                servResponse = receive_data(cliSocket, int(servResponseSize))
+                print(servResponse)
 
         # quit command
         elif buffer[0] == COMMANDS[3]:
             send_data(buffer[0], cliSocket)
             # close the socket
             cliSocket.close()
-            print("SUCCESSFULLY CALLED QUIT COMMAND. Connection closed...")
+            print("SUCCESS: Connection closed...")
             break
         else:
             print(buffer[0] + " is an invalid command.")

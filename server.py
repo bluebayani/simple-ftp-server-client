@@ -47,12 +47,21 @@ if __name__ == '__main__':
             elif fromClient == COMMANDS[1]:
                 print("SUCCESSFULLY CALLED PUT COMMAND.")
 
-            # TO DO: lists files on server
+            # ls: lists files on server
             elif fromClient == COMMANDS[2]:
-                print("SUCCESSFULLY CALLED LS COMMAND.")
+                print("SUCCESS. ls command invoked...")
 
-            # quit command
+                # get the names of the files on the server
+                response = get_files()
+                # Prepend 0's to the size string until the size is 10 bytes
+                responseSize = prepend_zeros(len(response))
+                # Prepend the size of the data to the file data
+                data = responseSize + response
+                # send the data to the client
+                send_data(data, cliSocket)
+
+            # quit: close the connection
             elif fromClient == COMMANDS[3]:
                 cliSocket.close()
-                print("SUCCESSFULLY CALLED QUIT COMMAND. Connection closed...")
+                print("SUCCESS. Connection closed...")
                 break
