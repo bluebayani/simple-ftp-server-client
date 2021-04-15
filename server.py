@@ -1,4 +1,5 @@
 import os
+import os.path
 import sys
 import socket
 from constants import *
@@ -37,7 +38,10 @@ if __name__ == '__main__':
 
             # TO DO: send the specified <FILE NAME> to the client
             if fromClient == COMMANDS[0]:
-                print("SUCCESSFULLY CALLED GET COMMAND.")
+                # Receive file name from client
+                fileName = receive_data(cliSocket, 10)
+                get_funcServ(fileName, cliSocket)     
+                continue
 
             # TO DO: download the specified <FILE NAME> from the client
             elif fromClient == COMMANDS[1]:
