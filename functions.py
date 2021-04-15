@@ -70,6 +70,9 @@ def get_funcCli(data, cliSocket):
 
     # Get the file size
     fileSize = int(fileSizeBuff)
+    
+    #retrieves the data
+    fileData = receive_data(cliSocket,fileSize)
 
     if fileSize != 0:
         print("The file size is", fileSize, "bytes transferred")
