@@ -46,7 +46,7 @@ def get_files():
     server_files = server_files[:-2]
     return server_files
 
- def get_funcCli(data, cliSocket):
+def get_funcCli(data, cliSocket):
 
     # The name of the file
     fileName = data
