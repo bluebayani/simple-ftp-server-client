@@ -111,7 +111,7 @@ def get_funcServ(fileName, cliSocket):
 
                 # Prepend the size of the data to the
                 # file data.
-                fileData = dataSizeStr
+                fileData = dataSizeStr + fileData
                 send_data(fileData, cliSocket)
                 print("SUCCESSFULLY CALLED GET COMMAND.")
             else:
