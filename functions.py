@@ -28,6 +28,7 @@ def send_data(data, socket):
     while len(data) > sentBytes:
         sentBytes += socket.send(data[sentBytes:])
 
+
 def prepend_zeros(data):
     # Get the size of the data read and convert it to string
     data = str(data)
@@ -46,12 +47,13 @@ def get_files():
     server_files = server_files[:-2]
     return server_files
 
+
 def get_funcCli(data, cliSocket):
 
     # The name of the file
     fileName = data
 
-    #send server the name of the file
+    # send server the name of the file
     send_data(fileName, cliSocket)
 
     fileData = ""
@@ -61,7 +63,7 @@ def get_funcCli(data, cliSocket):
 
     # The buffer containing the file size
     fileSizeBuff = ""
-    
+
     # Receive the first 10 bytes indicating the
     # size of the file
     fileSizeBuff = receive_data(cliSocket, 10)
@@ -76,14 +78,14 @@ def get_funcCli(data, cliSocket):
     else:
         print("File does not exist in server.")
 
+
 def get_funcServ(fileName, cliSocket):
     fileExist = False
-    #check if file is in directory
-    if os.path.isfile(fileName):
+    # check if file is in directory
+    if os.path.isfile(SERVER_FILES + fileName):
         fileExist = True
         # Open the file
-        fileObj = open(fileName, "r")
-
+        fileObj = open(SERVER_FILES + fileName, "r")
         # The number of bytes sent
         numSent = 0
         # The file data
@@ -113,11 +115,11 @@ def get_funcServ(fileName, cliSocket):
                 send_data(fileData, cliSocket)
                 print("SUCCESSFULLY CALLED GET COMMAND.")
             else:
-                #breaks loop when done reading file
+                # breaks loop when done reading file
                 break
-        
+
     else:
-        print ("FAILURE: File not exist")
+        print("FAILURE: File not exist")
         fileData = ""
         dataSizeStr = str(len(fileData))
 
@@ -127,7 +129,6 @@ def get_funcServ(fileName, cliSocket):
             dataSizeStr = "0" + dataSizeStr
         fileData = dataSizeStr
         send_data(fileData, cliSocket)
-        
-    if fileExist == True:
-        fileObj.close()    
 
+    if fileExist == True:
+        fileObj.close()
