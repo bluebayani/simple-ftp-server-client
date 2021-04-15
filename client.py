@@ -36,8 +36,13 @@ if __name__ == '__main__':
 
         # download the specified <FILE NAME> from the server
         if buffer[0] == COMMANDS[0]:
-            send_data(buffer[0], cliSocket)
-            print("SUCCESSFULLY CALLED GET COMMAND.")
+            if len(buffer) == 2:
+                send_data(buffer[0], cliSocket)
+                # The name of the file
+                fileName = buffer[1]
+                get_funcCli(fileName, cliSocket)
+            else:
+                print("USEAGE: get <file name>")
 
         # upload the specified <FILE NAME> to the server
         elif buffer[0] == COMMANDS[1]:
