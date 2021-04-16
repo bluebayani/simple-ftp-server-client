@@ -57,22 +57,13 @@ if __name__ == '__main__':
 
                 # TO DO: download the specified <FILE NAME> from the client
             elif info_chunks[0] == COMMANDS[1]:
-                put_funcServ(info_chunks[1], info_chunks[2], dataServerSocket, dataPort)
+                put_funcServ(info_chunks[1], info_chunks[2],
+                             dataServerSocket, dataPort)
                 print("SUCCESSFULLY CALLED PUT COMMAND.")
                 continue
 
-<<<<<<< HEAD
             # TO DO: lists files on server
             elif info_chunks[0] == COMMANDS[2]:
-                print("SUCCESSFULLY CALLED LS COMMAND.")
-
-            # quit command
-            elif info_chunks[0] == COMMANDS[3]:
-                dataClientSocket.close()
-                print("SUCCESSFULLY CALLED QUIT COMMAND. Connection closed...")
-=======
-            # ls: lists files on server
-            elif fromClient == COMMANDS[2]:
                 print("SUCCESS. ls command invoked...")
 
                 # get the names of the files on the server
@@ -82,11 +73,10 @@ if __name__ == '__main__':
                 # Prepend the size of the data to the file data
                 data = responseSize + response
                 # send the data to the client
-                send_data(data, cliSocket)
+                send_data(data, dataClientSocket)
 
-            # quit: close the connection
-            elif fromClient == COMMANDS[3]:
-                cliSocket.close()
+            # quit command
+            elif info_chunks[0] == COMMANDS[3]:
+                dataClientSocket.close()
                 print("SUCCESS. Connection closed...")
->>>>>>> 4f399e1a5a06b102ff09a6a04a7d588982d711fb
                 break

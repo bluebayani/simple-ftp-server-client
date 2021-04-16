@@ -1,12 +1,9 @@
 # put all functions in this file
+from socket import *
 import os
 import sys
 import time
 from constants import *
-<<<<<<< HEAD
-from socket import *
-=======
->>>>>>> 4f399e1a5a06b102ff09a6a04a7d588982d711fb
 
 
 def print_commands():
@@ -32,8 +29,6 @@ def send_data(data, socket):
     while len(data) > sentBytes:
         sentBytes += socket.send(data[sentBytes:])
 
-<<<<<<< HEAD
-=======
 
 def prepend_zeros(data):
     # Get the size of the data read and convert it to string
@@ -52,57 +47,6 @@ def get_files():
         server_files += file + "  "
     server_files = server_files[:-2]
     return server_files
-
-
-def get_funcCli(data, cliSocket):
->>>>>>> 4f399e1a5a06b102ff09a6a04a7d588982d711fb
-
-def put_funcServ(fileName, fileSize, dataServerSocket, dataServerPort):
-    while True:
-        print("Listening on port " + str(dataServerPort))
-        dataClientSocket, addr = dataServerSocket.accept()
-        print("Connected to " + addr[0])
-        recvBuff = ""
-        print(int(fileSize))
-        while len(recvBuff) < int(fileSize):
-            tmpBuff = receive_data(dataClientSocket, int(fileSize))
-            if not tmpBuff:
-                break
-            recvBuff += tmpBuff
-        print("Server Contents of file transferred")
-        print(recvBuff)
-        dataClientSocket.close()
-        break
-    path = os.path.dirname(os.path.abspath(__file__)) + '\\server_files' + '\\' + fileName
-    f = open(path, "w+")
-    f.write(recvBuff)
-    f.close()
-
-
-def put_funcCli(fileName, port):
-    server = "127.0.0.1"
-    clientDataSocket = socket(AF_INET, SOCK_STREAM)
-    clientDataSocket.connect((server, int(port)))
-    fileExist = False
-    fileObj = ""
-    path = os.path.dirname(os.path.abspath(__file__)) + '\\client_files' + '\\' + fileName
-    # check if file is in directory
-    if os.path.isfile(path):
-        fileExist = True
-        fileObj = open(path, "r")
-        while True:
-            fileData = fileObj.read(os.path.getsize(path))
-            if fileData:
-                send_data(fileData, clientDataSocket)
-                print("SUCCESSFULLY CALLED PUT COMMAND.")
-            else:
-                # breaks loop when done reading file
-                break
-    else:
-        print("FAILURE: File not exist")
-    clientDataSocket.close()
-    if fileExist:
-        fileObj.close()
 
 
 def get_funcCli(data, cliSocket):
@@ -126,9 +70,42 @@ def get_funcCli(data, cliSocket):
 
     # Get the file size
     fileSize = int(fileSizeBuff)
-    
-    #retrieves the data
-    fileData = receive_data(cliSocket,fileSize)
+
+    # retrieves the data
+    fileData = receive_data(cliSocket, fileSize)
+
+    if fileSize != 0:
+        print("The file size is", fileSize, "bytes transferred")
+
+        print("File name is ", fileName)
+    else:
+        print("File does not exist in server.")
+
+
+def get_funcCli(data, cliSocket):
+    # The name of the file
+    fileName = data
+
+    # send server the name of the file
+    send_data(fileName, cliSocket)
+
+    fileData = ""
+
+    # The size of the incoming file
+    fileSize = 0
+
+    # The buffer containing the file size
+    fileSizeBuff = ""
+
+    # Receive the first 10 bytes indicating the
+    # size of the file
+    fileSizeBuff = receive_data(cliSocket, 10)
+
+    # Get the file size
+    fileSize = int(fileSizeBuff)
+
+    # retrieves the data
+    fileData = receive_data(cliSocket, fileSize)
 
     if fileSize != 0:
         print("The file size is", fileSize, "bytes transferred")
@@ -141,19 +118,10 @@ def get_funcCli(data, cliSocket):
 def get_funcServ(fileName, cliSocket):
     fileExist = False
     # check if file is in directory
-<<<<<<< HEAD
-    path = os.path.dirname(os.path.abspath(__file__)) + '\\server_files' + '\\' + fileName
-    if os.path.isfile(path):
-        fileExist = True
-        # Open the file
-        fileObj = open(path, "r")
-
-=======
     if os.path.isfile(SERVER_FILES + fileName):
         fileExist = True
         # Open the file
         fileObj = open(SERVER_FILES + fileName, "r")
->>>>>>> 4f399e1a5a06b102ff09a6a04a7d588982d711fb
         # The number of bytes sent
         numSent = 0
         # The file data
@@ -197,10 +165,53 @@ def get_funcServ(fileName, cliSocket):
             dataSizeStr = "0" + dataSizeStr
         fileData = dataSizeStr
         send_data(fileData, cliSocket)
-
-<<<<<<< HEAD
     if fileExist:
-=======
-    if fileExist == True:
->>>>>>> 4f399e1a5a06b102ff09a6a04a7d588982d711fb
+        fileObj.close()
+
+
+def put_funcServ(fileName, fileSize, dataServerSocket, dataServerPort):
+    while True:
+        print("Listening on port " + str(dataServerPort))
+        dataClientSocket, addr = dataServerSocket.accept()
+        print("Connected to " + addr[0])
+        recvBuff = ""
+        print(int(fileSize))
+        while len(recvBuff) < int(fileSize):
+            tmpBuff = receive_data(dataClientSocket, int(fileSize))
+            if not tmpBuff:
+                break
+            recvBuff += tmpBuff
+        print("Server Contents of file transferred")
+        print(recvBuff)
+        dataClientSocket.close()
+        break
+    path = SERVER_FILES + fileName
+    f = open(path, "w+")
+    f.write(recvBuff)
+    f.close()
+
+
+def put_funcCli(fileName, port):
+    server = "127.0.0.1"
+    clientDataSocket = socket(AF_INET, SOCK_STREAM)
+    clientDataSocket.connect((server, int(port)))
+    fileExist = False
+    fileObj = ""
+    path = CLIENT_FILES + fileName
+    # check if file is in directory
+    if os.path.isfile(path):
+        fileExist = True
+        fileObj = open(path, "r")
+        while True:
+            fileData = fileObj.read(os.path.getsize(path))
+            if fileData:
+                send_data(fileData, clientDataSocket)
+                print("SUCCESSFULLY CALLED PUT COMMAND.")
+            else:
+                # breaks loop when done reading file
+                break
+    else:
+        print("FAILURE: File not exist")
+    clientDataSocket.close()
+    if fileExist:
         fileObj.close()
