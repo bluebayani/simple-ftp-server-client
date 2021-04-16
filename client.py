@@ -44,7 +44,7 @@ if __name__ == '__main__':
         # upload the specified <FILE NAME> to the server
         # WORK ON HERE
         elif buffer[0] == COMMANDS[1]:
-            path = os.path.dirname(os.path.abspath(__file__)) + '\\client_files' + '\\' + buffer[1]
+            path = os.path.dirname(os.path.abspath(__file__)) + '/client_files' + '/' + buffer[1]
             info = buffer[0] + " " + buffer[1] + " " + str(os.path.getsize(path))
             send_data(info, commandClientSocket)
             put_funcCli(buffer[1], int(serverPort)+1)
