@@ -11,17 +11,17 @@ if __name__ == '__main__':
         sys.exit()
 
     server = sys.argv[1]
-    port = sys.argv[2]
+    serverPort = sys.argv[2]
 
     # create socket
-    cliSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    # connect to server
-    cliSocket.connect((server, int(port)))
-    print("Connected to " + server + " on port " + str(port))
+    commandClientSocket = socket(AF_INET, SOCK_STREAM)
+    # connect to server socket
+    commandClientSocket.connect((server, int(serverPort)))
+    print("Connected to " + server + " on data port " + str(serverPort))
     print_commands()
 
     # cannot connect
-    if not cliSocket:
+    if not commandClientSocket:
         print("Failed to connect to " + server)
         sys.exit()
 
@@ -36,38 +36,30 @@ if __name__ == '__main__':
 
         # download the specified <FILE NAME> from the server
         if buffer[0] == COMMANDS[0]:
-            if len(buffer) == 2:
-                send_data(buffer[0], cliSocket)
-                # The name of the file
-                fileName = buffer[1]
-                get_funcCli(fileName, cliSocket)
-            else:
-                print("USEAGE: get <file name>")
+            print("GET")
+        #    The name of the file
+        #    fileName = buffer[1]
+        #    get_funcCli(fileName, commandClientSocket)
 
         # upload the specified <FILE NAME> to the server
+        # WORK ON HERE
         elif buffer[0] == COMMANDS[1]:
-            send_data(buffer[0], cliSocket)
-            print("SUCCESSFULLY CALLED PUT COMMAND.")
+            path = os.path.dirname(os.path.abspath(__file__)) + '\\client_files' + '\\' + buffer[1]
+            info = buffer[0] + " " + buffer[1] + " " + str(os.path.getsize(path))
+            send_data(info, commandClientSocket)
+            put_funcCli(buffer[1], int(serverPort)+1)
 
         # print list of files on the server
         elif buffer[0] == COMMANDS[2]:
-            send_data(buffer[0], cliSocket)
-            # get size of response
-            servResponseSize = receive_data(cliSocket, 10)
-
-            if servResponseSize == "":
-                print("FAILURE")
-            else:
-                print("SUCCESS: ls command invoked...")
-                servResponse = receive_data(cliSocket, int(servResponseSize))
-                print(servResponse)
+            send_data(buffer[0], commandClientSocket)
+            print("SUCCESSFULLY CALLED LS COMMAND.")
 
         # quit command
         elif buffer[0] == COMMANDS[3]:
-            send_data(buffer[0], cliSocket)
+            send_data(buffer[0], commandClientSocket)
             # close the socket
-            cliSocket.close()
-            print("SUCCESS: Connection closed...")
+            commandClientSocket.close()
+            print("SUCCESSFULLY CALLED QUIT COMMAND. Connection closed...")
             break
         else:
             print(buffer[0] + " is an invalid command.")
