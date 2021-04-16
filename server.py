@@ -61,6 +61,7 @@ if __name__ == '__main__':
                 print("SUCCESSFULLY CALLED PUT COMMAND.")
                 continue
 
+<<<<<<< HEAD
             # TO DO: lists files on server
             elif info_chunks[0] == COMMANDS[2]:
                 print("SUCCESSFULLY CALLED LS COMMAND.")
@@ -69,4 +70,23 @@ if __name__ == '__main__':
             elif info_chunks[0] == COMMANDS[3]:
                 dataClientSocket.close()
                 print("SUCCESSFULLY CALLED QUIT COMMAND. Connection closed...")
+=======
+            # ls: lists files on server
+            elif fromClient == COMMANDS[2]:
+                print("SUCCESS. ls command invoked...")
+
+                # get the names of the files on the server
+                response = get_files()
+                # Prepend 0's to the size string until the size is 10 bytes
+                responseSize = prepend_zeros(len(response))
+                # Prepend the size of the data to the file data
+                data = responseSize + response
+                # send the data to the client
+                send_data(data, cliSocket)
+
+            # quit: close the connection
+            elif fromClient == COMMANDS[3]:
+                cliSocket.close()
+                print("SUCCESS. Connection closed...")
+>>>>>>> 4f399e1a5a06b102ff09a6a04a7d588982d711fb
                 break
