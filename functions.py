@@ -77,6 +77,11 @@ def get_funcCli(data, cliSocket):
         print("The file size is", fileSize, "bytes transferred")
 
         print("File name is ", fileName)
+        
+        path = CLIENT_FILES + fileName
+        f = open(path, "w+")
+        f.write(fileData)
+        f.close()
     else:
         print("File does not exist in server.")
 
