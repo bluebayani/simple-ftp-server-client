@@ -34,31 +34,30 @@ def put_funcServ(fileName, fileSize, dataServerSocket, dataServerPort):
     while True:
         print("Listening on port " + str(dataServerPort))
         dataClientSocket, addr = dataServerSocket.accept()
-        print("Connected to " + addr[0])
         recvBuff = ""
-        print(int(fileSize))
         while len(recvBuff) < int(fileSize):
             tmpBuff = receive_data(dataClientSocket, int(fileSize))
             if not tmpBuff:
                 break
             recvBuff += tmpBuff
-        print("Server Contents of file transferred")
+        print("Server Contents of file transferred:")
         print(recvBuff)
         dataClientSocket.close()
         break
-    path = os.path.dirname(os.path.abspath(__file__)) + '\\server_files' + '\\' + fileName
+    path = os.path.dirname(os.path.abspath(__file__)) + '/server_files' + '/' + fileName
     f = open(path, "w+")
     f.write(recvBuff)
     f.close()
 
 
 def put_funcCli(fileName, port):
+    # TO DO: maybe change this to get it from a function parameter
     server = "127.0.0.1"
     clientDataSocket = socket(AF_INET, SOCK_STREAM)
     clientDataSocket.connect((server, int(port)))
     fileExist = False
     fileObj = ""
-    path = os.path.dirname(os.path.abspath(__file__)) + '\\client_files' + '\\' + fileName
+    path = os.path.dirname(os.path.abspath(__file__)) + '/client_files' + '/' + fileName
     # check if file is in directory
     if os.path.isfile(path):
         fileExist = True
