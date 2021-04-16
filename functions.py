@@ -48,40 +48,6 @@ def get_files():
     server_files = server_files[:-2]
     return server_files
 
-
-def get_funcCli(data, cliSocket):
-    # The name of the file
-    fileName = data
-
-    # send server the name of the file
-    send_data(fileName, cliSocket)
-
-    fileData = ""
-
-    # The size of the incoming file
-    fileSize = 0
-
-    # The buffer containing the file size
-    fileSizeBuff = ""
-
-    # Receive the first 10 bytes indicating the
-    # size of the file
-    fileSizeBuff = receive_data(cliSocket, 10)
-
-    # Get the file size
-    fileSize = int(fileSizeBuff)
-
-    # retrieves the data
-    fileData = receive_data(cliSocket, fileSize)
-
-    if fileSize != 0:
-        print("The file size is", fileSize, "bytes transferred")
-
-        print("File name is ", fileName)
-    else:
-        print("File does not exist in server.")
-
-
 def get_funcCli(data, cliSocket):
     # The name of the file
     fileName = data
