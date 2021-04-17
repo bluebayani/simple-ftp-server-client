@@ -40,7 +40,7 @@ if __name__ == '__main__':
                 send_data(buffer[0], commandClientSocket)
                 # The name of the file
                 fileName = buffer[1]
-                get_funcCli(fileName, commandClientSocket)
+                get_funcCli(fileName, int(serverPort)+1)
             else:
                 print("USEAGE: get <file name>")
 
