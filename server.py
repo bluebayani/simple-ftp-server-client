@@ -50,9 +50,7 @@ if __name__ == '__main__':
             info_chunks = str(fromDataClient).split(' ')
             # TO DO: send the specified <FILE NAME> to the client
             if info_chunks[0] == COMMANDS[0]:
-                # Receive file name from client
-                fileName = receive_data(dataClientSocket, 10)
-                get_funcServ(fileName, dataClientSocket)
+                get_funcServ(dataServerSocket, dataPort)
                 continue
 
                 # TO DO: download the specified <FILE NAME> from the client
