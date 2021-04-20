@@ -5,9 +5,9 @@ Vincent Lee (lee.v3798@csu.fullerton.edu)</br>
 
 Programming language used: Python</br>
 
-## Usage:</br>
+## How to execute the program: </br>
 Invoke the server using: ```python3 server.py <PORT>``` </br>
-Invoke the client using: ```python3 client.py <SERVER MACHINE> <PORT>```</br>
+On a seperate window, invoke the client using: ```python3 client.py <SERVER MACHINE> <PORT>```</br>
 
 **NOTE: The client and server port numbers should match.**</br>
 _**EXAMPLE:**_</br>
@@ -16,7 +16,7 @@ _**EXAMPLE:**_</br>
 
 </br>
 
-#### Client Commands:</br>
+#### Accepted Commands:</br>
 - ```ftp> get <FILE NAME>``` :  downloads <FILE NAME> from the server</br>
 - ```ftp> put <FILE NAME>``` :  uploads <FILE NAME> from the client to the server</br>
 - ```ftp> ls```         :  lists fils on the server</br>
