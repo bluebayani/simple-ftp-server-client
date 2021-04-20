@@ -37,13 +37,12 @@ if __name__ == '__main__':
     elif not dataServerSocket:
         print("Failed bind to a port for the data channel")
         sys.exit()
-
+    # keep listening for connections until user ends process
+    print("Listening on port " + commandPort + " for commands and port " + str(dataPort) +
+          " for data transfers")
     while True:
-        # keep listening for connections until user ends process
-        print("Listening on port " + commandPort + " for commands and port " + str(dataPort) +
-              " for data transfers")
         dataClientSocket, dataClientAddr = commandServerSocket.accept()
-        print("Connected to " + dataClientAddr[0])
+        # print("Connected to " + dataClientAddr[0])
         while True:
             # get command from data client socket
             fromDataClient = receive_data(dataClientSocket, 50)
@@ -51,27 +50,31 @@ if __name__ == '__main__':
             # TO DO: send the specified <FILE NAME> to the client
             if info_chunks[0] == COMMANDS[0]:
                 get_funcServ(dataServerSocket, dataPort)
+                # print("SUCCESS: get command invoked...")
                 continue
 
                 # TO DO: download the specified <FILE NAME> from the client
             elif info_chunks[0] == COMMANDS[1]:
                 put_funcServ(info_chunks[1], info_chunks[2],
                              dataServerSocket, dataPort)
-                print("SUCCESSFULLY CALLED PUT COMMAND.")
+                # print("SUCCESS: put command invoked...")
                 continue
 
             # TO DO: lists files on server
             elif info_chunks[0] == COMMANDS[2]:
-                print("SUCCESS. ls command invoked...")
-
                 # get the names of the files on the server
                 response = get_files()
+                if(response != "No files on server"):
+                    print("SUCCESS. ls command invoked...")
+                else:
+                    print("FAILURE. No files on server")
                 # Prepend 0's to the size string until the size is 10 bytes
                 responseSize = prepend_zeros(len(response))
                 # Prepend the size of the data to the file data
                 data = responseSize + response
                 # send the data to the client
                 send_data(data, dataClientSocket)
+                continue
 
             # quit command
             elif info_chunks[0] == COMMANDS[3]:

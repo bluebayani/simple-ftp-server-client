@@ -42,11 +42,16 @@ def prepend_zeros(data):
 def get_files():
     # return a variable with the names of the files from ./server_files/
     files = os.listdir(SERVER_FILES)
+    # print(files)
     server_files = ""
-    for file in files:
-        server_files += file + "  "
-    server_files = server_files[:-2]
+    if len(files) == 0:
+        server_files = "No files on server"
+    else:
+        for file in files:
+            server_files += file + "  "
+        server_files = server_files[:-2]
     return server_files
+
 
 def get_funcCli(data, port):
     server = "127.0.0.1"
@@ -97,33 +102,33 @@ def get_funcServ(dataServerSocket, dataServerPort):
     fileExist = False
     # check if file is in directory
     if os.path.isfile(SERVER_FILES + fileName):
-            fileExist = True
-            # Open the file
-            fileObj = open(SERVER_FILES + fileName, "r")
-            # The number of bytes sent
-            numSent = 0
-            # The file data
-            fileData = None
+        fileExist = True
+        # Open the file
+        fileObj = open(SERVER_FILES + fileName, "r")
+        # The number of bytes sent
+        numSent = 0
+        # The file data
+        fileData = None
 
-            # Keep sending until all is sent
-            while True:
-                # Read 65536 bytes of data
-                fileData = fileObj.read(65536)
-                # Make sure we did not hit EOF
-                if fileData:
-                    # Get the size of the data read and convert it to string
-                    dataSizeStr = str(len(fileData))
-                    # Prepend 0's to the size string until the size is 10 bytes
-                    while len(dataSizeStr) < 10:
-                        dataSizeStr = "0" + dataSizeStr
-                    # Prepend the size of the data to the file data.
-                    fileData = dataSizeStr + fileData
-                    send_data(fileData, dataClientSocket)
-                    print("SUCCESSFULLY CALLED GET COMMAND.")
-                    dataClientSocket.close()
-                else:
-                    # breaks loop when done reading file
-                    break
+        # Keep sending until all is sent
+        while True:
+            # Read 65536 bytes of data
+            fileData = fileObj.read(65536)
+            # Make sure we did not hit EOF
+            if fileData:
+                # Get the size of the data read and convert it to string
+                dataSizeStr = str(len(fileData))
+                # Prepend 0's to the size string until the size is 10 bytes
+                while len(dataSizeStr) < 10:
+                    dataSizeStr = "0" + dataSizeStr
+                # Prepend the size of the data to the file data.
+                fileData = dataSizeStr + fileData
+                send_data(fileData, dataClientSocket)
+                print("SUCCESS: Called get")
+                dataClientSocket.close()
+            else:
+                # breaks loop when done reading file
+                break
     else:
         print("FAILURE: File not exist")
         fileData = ""
@@ -175,12 +180,12 @@ def put_funcCli(fileName, port):
             fileData = fileObj.read(os.path.getsize(path))
             if fileData:
                 send_data(fileData, clientDataSocket)
-                print("SUCCESSFULLY CALLED PUT COMMAND.")
+                # print("SUCCESS: Called put")
             else:
                 # breaks loop when done reading file
                 break
     else:
-        print("FAILURE: File not exist")
+        print("File not exist")
     clientDataSocket.close()
     if fileExist:
         fileObj.close()

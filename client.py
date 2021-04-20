@@ -60,9 +60,8 @@ if __name__ == '__main__':
             servResponseSize = receive_data(commandClientSocket, 10)
 
             if servResponseSize == "":
-                print("FAILURE")
+                print("No files in server")
             else:
-                print("SUCCESS: ls command invoked...")
                 servResponse = receive_data(
                     commandClientSocket, int(servResponseSize))
                 print(servResponse)
@@ -72,7 +71,6 @@ if __name__ == '__main__':
             send_data(buffer[0], commandClientSocket)
             # close the socket
             commandClientSocket.close()
-            print("SUCCESS: Connection closed...")
             break
         else:
             print(buffer[0] + " is an invalid command.")
