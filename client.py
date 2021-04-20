@@ -1,6 +1,8 @@
 import os
 import sys
 import socket
+from server_functions import *
+from client_functions import *
 from constants import *
 from functions import *
 
@@ -45,7 +47,6 @@ if __name__ == '__main__':
                 print("USEAGE: get <file name>")
 
         # upload the specified <FILE NAME> to the server
-        # WORK ON HERE
         elif buffer[0] == COMMANDS[1]:
             path = CLIENT_FILES + buffer[1]
             info = buffer[0] + " " + buffer[1] + \
@@ -56,21 +57,12 @@ if __name__ == '__main__':
         # print list of files on the server
         elif buffer[0] == COMMANDS[2]:
             send_data(buffer[0], commandClientSocket)
-            # get size of response
-            servResponseSize = receive_data(commandClientSocket, 10)
-
-            if servResponseSize == "":
-                print("No files in server")
-            else:
-                servResponse = receive_data(
-                    commandClientSocket, int(servResponseSize))
-                print(servResponse)
+            ls_funcCli(commandClientSocket)
 
         # quit command
         elif buffer[0] == COMMANDS[3]:
             send_data(buffer[0], commandClientSocket)
-            # close the socket
-            commandClientSocket.close()
+            quit_funcCli(commandClientSocket)
             break
         else:
             print(buffer[0] + " is an invalid command.")
