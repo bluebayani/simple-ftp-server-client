@@ -3,6 +3,8 @@ Blue Bayani (kbayani@csu.fullerton.edu)</br>
 Brian Edwards (brian_edwards@csu.fullerton.edu)</br>
 Vincent Lee (lee.v3798@csu.fullerton.edu)</br>
 
+Programming language used: Python</br>
+
 ## Usage:</br>
 Invoke the server using: ```python3 server.py <PORT>``` </br>
 Invoke the client using: ```python3 client.py <SERVER MACHINE> <PORT>```</br>
