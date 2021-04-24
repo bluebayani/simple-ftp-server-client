@@ -14,7 +14,7 @@ _**EXAMPLE:**_</br>
 > ```python3 server.py 12000```</br> 
 > ```python3 client.py <your ip address> 12000``` </br> 
 
-**Tip: If your IP address is not working, try 127.0.0.1 instead
+Tip: If your IP address is not working, try 127.0.0.1 instead
 
 </br>
 
