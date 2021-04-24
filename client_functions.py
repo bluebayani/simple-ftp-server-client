@@ -7,8 +7,7 @@ from constants import *
 from functions import *
 
 
-def get_funcCli(data, port):
-    server = "127.0.0.1"
+def get_funcCli(data, port, server):
     clientDataSocket = socket(AF_INET, SOCK_STREAM)
     clientDataSocket.connect((server, int(port)))
     # The name of the file
@@ -45,13 +44,13 @@ def get_funcCli(data, port):
         clientDataSocket.close()
 
 
-def put_funcCli(fileName, port):
-    server = "127.0.0.1"
+def put_funcCli(fileName, port, server):
     clientDataSocket = socket(AF_INET, SOCK_STREAM)
     clientDataSocket.connect((server, int(port)))
     fileExist = False
     fileObj = ""
     path = CLIENT_FILES + fileName
+
     # check if file is in directory
     if os.path.isfile(path):
         fileExist = True
@@ -63,6 +62,8 @@ def put_funcCli(fileName, port):
             else:
                 # breaks loop when done reading file
                 break
+        print("File name: ", fileName)
+        print("File size: ", str(os.path.getsize(path)), "bytes")
     else:
         print("File not exist")
     clientDataSocket.close()
