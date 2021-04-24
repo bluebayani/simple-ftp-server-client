@@ -19,47 +19,55 @@ if __name__ == '__main__':
     commandPort = sys.argv[1]
     dataPort = int(sys.argv[1]) + 1
 
-    # create socket
+    # create command channel socket
     commandServerSocket = socket(AF_INET, SOCK_STREAM)
-    # bind socket to port
+    # bind command channel socket to port
     commandServerSocket.bind(('', int(commandPort)))
     # listen for incoming connections
     commandServerSocket.listen(1)
 
-    # create socket
-    dataServerSocket = socket(AF_INET, SOCK_STREAM)
-    # bind socket to port
-    dataServerSocket.bind(('', int(dataPort)))
-    # listen for incoming connections
-    dataServerSocket.listen(1)
-
     if not commandServerSocket:
         print("Failed bind to a port for the command channel")
         sys.exit()
-    elif not dataServerSocket:
-        print("Failed bind to a port for the data channel")
-        sys.exit()
+
     # keep listening for connections until user ends process
-    print("Listening on port " + commandPort + " for commands and port " + str(dataPort) +
-          " for data transfers")
+    print("Listening on port " + commandPort)
     while True:
         dataClientSocket, dataClientAddr = commandServerSocket.accept()
+        print("Client Joined")
         while True:
             # send the specified <FILE NAME> to the client
             fromDataClient = receive_data(dataClientSocket, 50)
             info_chunks = str(fromDataClient).split(' ')
-
             if info_chunks[0] == COMMANDS[0]:
+                # create data channel socket
+                dataServerSocket = socket(AF_INET, SOCK_STREAM)
+                # bind data channel socket to port
+                dataServerSocket.bind(('', int(dataPort)))
+                # listen for incoming connections
+                dataServerSocket.listen(1)
+                print("Data transfer port " + str(dataPort) + " open")
                 get_funcServ(dataServerSocket, dataPort)
+                print("Data transfer port " + str(dataPort) + " closed")
+                dataServerSocket.close()
                 continue
 
                 # download the specified <FILE NAME> from the client
             elif info_chunks[0] == COMMANDS[1]:
+                # create data channel socket
+                dataServerSocket = socket(AF_INET, SOCK_STREAM)
+                # bind data channel socket to port
+                dataServerSocket.bind(('', int(dataPort)))
+                # listen for incoming connections
+                dataServerSocket.listen(1)
+                print("Data transfer port " + str(dataPort) + " open")
                 put_funcServ(info_chunks[1], info_chunks[2],
-                             dataServerSocket, dataPort)
+                             dataServerSocket)
+                print("Data transfer port " + str(dataPort) + " closed")
+                dataServerSocket.close()
                 continue
 
-            # TO DO: lists files on server
+            # lists files on server
             elif info_chunks[0] == COMMANDS[2]:
                 ls_funcServ(dataClientSocket)
                 continue
@@ -67,4 +75,5 @@ if __name__ == '__main__':
             # quit command
             elif info_chunks[0] == COMMANDS[3]:
                 quit_funcServ(dataClientSocket)
+                print("Client Left")
                 break

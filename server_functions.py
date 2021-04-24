@@ -53,10 +53,11 @@ def get_funcServ(dataServerSocket, dataServerPort):
         fileObj.close()
 
 
-def put_funcServ(fileName, fileSize, dataServerSocket, dataServerPort):
+def put_funcServ(fileName, fileSize, dataServerSocket):
     while True:
         dataClientSocket, addr = dataServerSocket.accept()
         recvBuff = ""
+        # Collects data from data channel
         while len(recvBuff) < int(fileSize):
             tmpBuff = receive_data(dataClientSocket, int(fileSize))
             if not tmpBuff:
@@ -64,9 +65,7 @@ def put_funcServ(fileName, fileSize, dataServerSocket, dataServerPort):
             recvBuff += tmpBuff
         print("SUCCESS: Called put")
         print("File Name: " + fileName)
-        print("File Size: " + str(fileSize))
-        print("Content of file:")
-        print(recvBuff)
+        print("File Size: " + str(fileSize) + "bytes")
         dataClientSocket.close()
         break
     path = SERVER_FILES + fileName

@@ -42,17 +42,23 @@ if __name__ == '__main__':
                 send_data(buffer[0], commandClientSocket)
                 # The name of the file
                 fileName = buffer[1]
-                get_funcCli(fileName, int(serverPort)+1)
+                get_funcCli(fileName, int(serverPort) + 1, server)
             else:
-                print("USEAGE: get <file name>")
+                print("USAGE: get <file name>")
 
         # upload the specified <FILE NAME> to the server
         elif buffer[0] == COMMANDS[1]:
-            path = CLIENT_FILES + buffer[1]
-            info = buffer[0] + " " + buffer[1] + \
-                " " + str(os.path.getsize(path))
-            send_data(info, commandClientSocket)
-            put_funcCli(buffer[1], int(serverPort)+1)
+            if not len(buffer) == 2:
+                print("USAGE: put <file name>")
+            else:
+                if os.path.isfile(CLIENT_FILES + buffer[1]):
+                    path = CLIENT_FILES + buffer[1]
+                    info = buffer[0] + " " + buffer[1] + \
+                           " " + str(os.path.getsize(path))
+                    send_data(info, commandClientSocket)
+                    put_funcCli(buffer[1], int(serverPort) + 1, server)
+                else:
+                    print("File Does Not Exist. Try Again.")
 
         # print list of files on the server
         elif buffer[0] == COMMANDS[2]:
