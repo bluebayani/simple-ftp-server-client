@@ -13,6 +13,7 @@ On a seperate window, invoke the client using: ```python3 client.py <SERVER MACH
 _**EXAMPLE:**_</br>
 > ```python3 server.py 12000```</br> 
 > ```python3 client.py <your ip address> 12000``` </br> 
+***Note: If your IP address is not working, try 127.0.0.1 instead
 
 </br>
 
